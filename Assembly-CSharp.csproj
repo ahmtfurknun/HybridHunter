@@ -51,6 +51,7 @@
     <Compile Include="Assets/Scripts/PortalTrigger.cs" />
     <Compile Include="Assets/Scripts/ScavengerGameManager.cs" />
     <Compile Include="Assets/Scripts/RealityManager.cs" />
+    <Compile Include="Assets/Scripts/LaserPointerInteractor.cs" />
     <Compile Include="Assets/TutorialInfo/Scripts/Readme.cs" />
   </ItemGroup>
   <ItemGroup>
