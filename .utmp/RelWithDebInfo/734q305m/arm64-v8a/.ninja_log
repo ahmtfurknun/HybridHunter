@@ -1,0 +1,10 @@
+# ninja log v5
+1	785	1765461223429374546	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	ae377928f8bbf274
+1	813	1765461223461038133	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	23542c3d85bf80f5
+2	821	1765461223469090958	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	c1d63e2a77ab6a28
+0	836	1765461223485138023	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	40521ad96d20bb7f
+0	915	1765461223564376054	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	46af53937d0dee6f
+2	929	1765461223578834155	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	92c72e580e9847ab
+1	1032	1765461223682291869	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	638754f0197b8b3b
+0	1109	1765461223759452268	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	96004f6c89464254
+1109	1168	1765461223819586888	/Users/ahmetfurkanun/The Hybrid Hunt/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/734q305m/obj/arm64-v8a/libgame.so	69a31439960c99bc
