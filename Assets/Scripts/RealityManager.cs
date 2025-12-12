@@ -74,6 +74,18 @@ public class RealityManager : MonoBehaviour
 
     void Update()
     {
+        // Don't allow transitions if game hasn't started yet
+        if (ScavengerGameManager.Instance != null && !ScavengerGameManager.Instance.IsGameStarted())
+        {
+            return; // Game hasn't started, disable transitions
+        }
+
+        // Don't allow transitions if game is completed (victory screen showing)
+        if (ScavengerGameManager.Instance != null && ScavengerGameManager.Instance.IsGameCompleted())
+        {
+            return; // Victory screen showing, disable transitions
+        }
+
         // Don't allow transitions if already transitioning
         if (isTransitioning)
         {
@@ -194,10 +206,10 @@ public class RealityManager : MonoBehaviour
         fadeQuad.name = "FadeQuad";
         fadeQuad.transform.SetParent(targetCamera.transform, false);
         
-        // Position quad in front of camera (local space)
-        fadeQuad.transform.localPosition = new Vector3(0, 0, 0.5f); // 50cm in front
+        // Position quad in front of camera (local space) - closer for better coverage
+        fadeQuad.transform.localPosition = new Vector3(0, 0, 0.3f); // 30cm in front
         fadeQuad.transform.localRotation = Quaternion.identity;
-        fadeQuad.transform.localScale = new Vector3(5f, 5f, 1f); // Large enough to cover view
+        fadeQuad.transform.localScale = new Vector3(20f, 20f, 1f); // Much larger to cover full VR FOV
         
         // Remove collider (we don't need it)
         Collider collider = fadeQuad.GetComponent<Collider>();
@@ -206,14 +218,16 @@ public class RealityManager : MonoBehaviour
             Destroy(collider);
         }
         
-        // Try to use Oculus shader, fallback to standard transparent shader
+        // Try to use Oculus shader first (best for VR)
         Shader fadeShader = Shader.Find("Oculus/Unlit Transparent Color");
         if (fadeShader == null)
         {
-            fadeShader = Shader.Find("Unlit/Transparent");
+            // Fallback to Unlit/Color shader (Unity built-in)
+            fadeShader = Shader.Find("Unlit/Color");
         }
         if (fadeShader == null)
         {
+            // Last resort: Standard shader
             fadeShader = Shader.Find("Standard");
         }
         
@@ -232,7 +246,7 @@ public class RealityManager : MonoBehaviour
         Color initialColor = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0f);
         fadeMaterial.color = initialColor;
         
-        // If using Standard shader, set rendering mode to transparent
+        // Configure shader based on type
         if (fadeShader.name == "Standard")
         {
             fadeMaterial.SetFloat("_Mode", 3); // Transparent mode
@@ -246,7 +260,8 @@ public class RealityManager : MonoBehaviour
         }
         else
         {
-            fadeMaterial.renderQueue = 4000; // Transparent queue
+            // Use highest render queue to ensure it renders on top of everything
+            fadeMaterial.renderQueue = 5000; // Very high render queue
         }
         
         // Apply material to renderer
@@ -254,6 +269,10 @@ public class RealityManager : MonoBehaviour
         fadeRenderer.material = fadeMaterial;
         fadeRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         fadeRenderer.receiveShadows = false;
+        
+        // Ensure quad always renders on top (disable depth testing)
+        // Note: This requires a shader that supports ZTest Always
+        // The Oculus shader should handle this, but we'll set it up properly
         
         // Initially disable
         fadeQuad.SetActive(false);
@@ -266,21 +285,31 @@ public class RealityManager : MonoBehaviour
             return; // Already transitioning
         }
 
-        StartCoroutine(FadeTransition(switchToVR));
+        StartCoroutine(FadeTransition(switchToVR, fadeColor));
     }
 
-    IEnumerator FadeTransition(bool switchToVR)
+    public void StartFadeTransition(bool switchToVR, Color transitionColor)
+    {
+        if (isTransitioning)
+        {
+            return; // Already transitioning
+        }
+
+        StartCoroutine(FadeTransition(switchToVR, transitionColor));
+    }
+
+    IEnumerator FadeTransition(bool switchToVR, Color transitionColor)
     {
         isTransitioning = true;
 
-        Debug.Log($"RealityManager: Starting fade transition to {(switchToVR ? "VR" : "AR")}");
+        Debug.Log($"RealityManager: Starting fade transition to {(switchToVR ? "VR" : "AR")} with color {transitionColor}");
 
-        // Fade to black
-        Debug.Log("RealityManager: Fading to black...");
-        yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
-        Debug.Log("RealityManager: Faded to black, switching worlds...");
+        // Fade to transition color
+        Debug.Log($"RealityManager: Fading to {transitionColor}...");
+        yield return StartCoroutine(Fade(0f, 1f, fadeDuration, transitionColor));
+        Debug.Log($"RealityManager: Faded to {transitionColor}, switching worlds...");
 
-        // Switch worlds while black
+        // Switch worlds while at full color
         if (switchToVR)
         {
             SwitchToVR();
@@ -290,18 +319,23 @@ public class RealityManager : MonoBehaviour
             SwitchToAR();
         }
 
-        // Wait a brief moment at full black
+        // Wait a brief moment at full color
         yield return new WaitForSeconds(0.1f);
 
         // Fade back in
         Debug.Log("RealityManager: Fading back in...");
-        yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
+        yield return StartCoroutine(Fade(1f, 0f, fadeDuration, transitionColor));
         Debug.Log("RealityManager: Fade transition complete");
 
         isTransitioning = false;
     }
 
     IEnumerator Fade(float startAlpha, float endAlpha, float duration)
+    {
+        yield return StartCoroutine(Fade(startAlpha, endAlpha, duration, fadeColor));
+    }
+
+    IEnumerator Fade(float startAlpha, float endAlpha, float duration, Color transitionColor)
     {
         if (fadeQuad == null || fadeMaterial == null)
         {
@@ -317,7 +351,7 @@ public class RealityManager : MonoBehaviour
         }
 
         float elapsed = 0f;
-        Color color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, startAlpha);
+        Color color = new Color(transitionColor.r, transitionColor.g, transitionColor.b, startAlpha);
 
         while (elapsed < duration)
         {
@@ -325,16 +359,14 @@ public class RealityManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             float alpha = Mathf.Lerp(startAlpha, endAlpha, t);
             
-            // Update color with proper RGB values from fadeColor
-            color.r = fadeColor.r;
-            color.g = fadeColor.g;
-            color.b = fadeColor.b;
+            // Update color with proper RGB values from transitionColor
+            color.r = transitionColor.r;
+            color.g = transitionColor.g;
+            color.b = transitionColor.b;
             color.a = alpha;
             
+            // Update material color directly (don't reassign material)
             fadeMaterial.color = color;
-            
-            // Force material update
-            fadeRenderer.material = fadeMaterial;
             
             yield return null;
         }
@@ -342,7 +374,6 @@ public class RealityManager : MonoBehaviour
         // Ensure final alpha is set
         color.a = endAlpha;
         fadeMaterial.color = color;
-        fadeRenderer.material = fadeMaterial;
         
         // Disable quad if fully transparent
         if (endAlpha <= 0)

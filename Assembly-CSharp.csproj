@@ -48,11 +48,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scripts/SimpleOVRMovement.cs" />
-    <Compile Include="Assets/Scripts/PortalTrigger.cs" />
     <Compile Include="Assets/Scripts/ScavengerGameManager.cs" />
     <Compile Include="Assets/Scripts/RealityManager.cs" />
+    <Compile Include="Assets/Scripts/OrbTransitionManager.cs" />
     <Compile Include="Assets/Scripts/LaserPointerInteractor.cs" />
     <Compile Include="Assets/TutorialInfo/Scripts/Readme.cs" />
+    <Compile Include="Assets/Scripts/GameStartUI.cs" />
+    <Compile Include="Assets/Scripts/ChestInteractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />

@@ -45,6 +45,23 @@ public class LaserPointerInteractor : MonoBehaviour
 
     void Update()
     {
+        // Don't show laser or allow interaction if game hasn't started
+        if (ScavengerGameManager.Instance == null || !ScavengerGameManager.Instance.IsGameStarted())
+        {
+            // Hide laser
+            if (lineRenderer != null)
+            {
+                lineRenderer.enabled = false;
+            }
+            return;
+        }
+
+        // Show laser
+        if (lineRenderer != null)
+        {
+            lineRenderer.enabled = true;
+        }
+
         // Cast ray from controller position forward
         Vector3 rayOrigin = transform.position;
         Vector3 rayDirection = transform.forward;
@@ -58,7 +75,7 @@ public class LaserPointerInteractor : MonoBehaviour
         // Check if hitting a collectible
         CheckCollectibleHit(hit);
 
-        // Check for trigger input
+        // Check for trigger input (but only for collectibles/chest, not for starting game)
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
         {
             OnTriggerPressed();
@@ -101,35 +118,100 @@ public class LaserPointerInteractor : MonoBehaviour
             GameObject hitObject = hitInfo.collider.gameObject;
 
             // Check if the hit object or its parent has the "Collectible" tag
-            if (hitObject.CompareTag("Collectible") || 
-                (hitObject.transform.parent != null && hitObject.transform.parent.CompareTag("Collectible")))
+            if (hitObject.CompareTag("Collectible"))
             {
                 isHittingCollectible = true;
-                currentHitObject = hitObject.CompareTag("Collectible") ? hitObject : hitObject.transform.parent.gameObject;
+                currentHitObject = hitObject;
+            }
+            else if (hitObject.transform.parent != null && hitObject.transform.parent.CompareTag("Collectible"))
+            {
+                isHittingCollectible = true;
+                currentHitObject = hitObject.transform.parent.gameObject;
+            }
+            // Also check if any parent up the hierarchy has the tag
+            else
+            {
+                Transform parent = hitObject.transform.parent;
+                while (parent != null)
+                {
+                    if (parent.CompareTag("Collectible"))
+                    {
+                        isHittingCollectible = true;
+                        currentHitObject = parent.gameObject;
+                        break;
+                    }
+                    parent = parent.parent;
+                }
+            }
+
+            // Also check for Chest interaction
+            if (!isHittingCollectible)
+            {
+                if (hitObject.CompareTag("Chest") || 
+                    (hitObject.transform.parent != null && hitObject.transform.parent.CompareTag("Chest")))
+                {
+                    GameObject chestObject = hitObject.CompareTag("Chest") ? hitObject : hitObject.transform.parent.gameObject;
+                    ChestInteractor chest = chestObject.GetComponent<ChestInteractor>();
+                    if (chest != null)
+                    {
+                        isHittingCollectible = true; // Use same flag for interaction
+                        currentHitObject = chestObject;
+                    }
+                }
             }
         }
     }
 
     void OnTriggerPressed()
     {
-        // Only interact if hitting a collectible
+        Debug.Log($"LaserPointerInteractor: Trigger pressed. isHittingCollectible: {isHittingCollectible}, currentHitObject: {(currentHitObject != null ? currentHitObject.name : "null")}");
+
+        // Only interact if hitting a collectible or chest
         if (isHittingCollectible && currentHitObject != null)
         {
-            // Play laser shot sound
-            if (audioSource != null && laserShotSound != null)
+            // Check if it's a chest
+            if (currentHitObject.CompareTag("Chest"))
             {
-                audioSource.PlayOneShot(laserShotSound);
-            }
+                Debug.Log($"LaserPointerInteractor: Attempting to open chest {currentHitObject.name}");
 
-            // Notify ScavengerGameManager
-            if (ScavengerGameManager.Instance != null)
-            {
-                ScavengerGameManager.Instance.ObjectFound(currentHitObject);
+                // Play laser shot sound
+                if (audioSource != null && laserShotSound != null)
+                {
+                    audioSource.PlayOneShot(laserShotSound);
+                }
+
+                // Interact with chest
+                ChestInteractor chest = currentHitObject.GetComponent<ChestInteractor>();
+                if (chest != null)
+                {
+                    chest.OnPlayerInteract();
+                }
             }
             else
             {
-                Debug.LogWarning("LaserPointerInteractor: ScavengerGameManager.Instance is null!");
+                // It's a collectible
+                Debug.Log($"LaserPointerInteractor: Attempting to collect {currentHitObject.name}");
+
+                // Play laser shot sound
+                if (audioSource != null && laserShotSound != null)
+                {
+                    audioSource.PlayOneShot(laserShotSound);
+                }
+
+                // Notify ScavengerGameManager
+                if (ScavengerGameManager.Instance != null)
+                {
+                    ScavengerGameManager.Instance.ObjectFound(currentHitObject);
+                }
+                else
+                {
+                    Debug.LogWarning("LaserPointerInteractor: ScavengerGameManager.Instance is null!");
+                }
             }
+        }
+        else
+        {
+            Debug.Log($"LaserPointerInteractor: Cannot interact - isHittingCollectible: {isHittingCollectible}, currentHitObject: {(currentHitObject != null ? currentHitObject.name : "null")}");
         }
     }
 }

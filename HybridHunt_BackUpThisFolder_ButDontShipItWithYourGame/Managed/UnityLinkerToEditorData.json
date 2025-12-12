@@ -31,7 +31,7 @@
           {
             "name": "NavMeshSettings",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 1,
             "icon": null
@@ -94,7 +94,7 @@
           {
             "name": "AudioBehaviour",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -108,7 +108,7 @@
           {
             "name": "AudioListener",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -157,7 +157,7 @@
           {
             "name": "Camera",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -171,7 +171,7 @@
           {
             "name": "ComputeShader",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -179,7 +179,7 @@
           {
             "name": "Cubemap",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -199,7 +199,7 @@
           {
             "name": "EditorExtension",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 1,
             "icon": null
@@ -213,7 +213,7 @@
           {
             "name": "GameObject",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -245,7 +245,7 @@
           {
             "name": "LevelGameManager",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 1,
             "icon": null
@@ -253,7 +253,7 @@
           {
             "name": "Light",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -279,7 +279,7 @@
           {
             "name": "LightmapSettings",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -287,7 +287,7 @@
           {
             "name": "LineRenderer",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -301,7 +301,7 @@
           {
             "name": "Material",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -309,7 +309,7 @@
           {
             "name": "Mesh",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -317,7 +317,7 @@
           {
             "name": "MeshFilter",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -325,7 +325,7 @@
           {
             "name": "MeshRenderer",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -333,7 +333,7 @@
           {
             "name": "MonoBehaviour",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -347,7 +347,7 @@
           {
             "name": "MonoScript",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 1,
             "icon": null
@@ -355,7 +355,7 @@
           {
             "name": "NamedObject",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 1,
             "icon": null
@@ -393,7 +393,7 @@
           {
             "name": "RectTransform",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -407,7 +407,7 @@
           {
             "name": "RenderSettings",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -415,7 +415,7 @@
           {
             "name": "RenderTexture",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -441,7 +441,7 @@
           {
             "name": "Shader",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -473,7 +473,7 @@
           {
             "name": "Sprite",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -1007,7 +1007,7 @@
           {
             "name": "CharacterController",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -1039,7 +1039,7 @@
           {
             "name": "MeshCollider",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -1474,7 +1474,7 @@
           {
             "name": "Font",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -1517,7 +1517,7 @@
           {
             "name": "Canvas",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
@@ -1531,7 +1531,7 @@
           {
             "name": "CanvasRenderer",
             "scenes": [
-              "Assets/_Recovery/0.unity"
+              "Assets/Scenes/0.unity"
             ],
             "dependencyType": 0,
             "icon": null
